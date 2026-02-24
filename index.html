@@ -1,40 +1,316 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Nitya Seva — ISKCON Centre Orai</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-<script src="https://www.paynimo.com/paynimocheckout/client/lib/jquery.min.js"></script>
-<script src="https://www.paynimo.com/paynimocheckout/server/lib/checkout.js"></script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1"/>
+  <title>Nitya Seva — ISKCON Centre Orai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://www.paynimo.com/paynimocheckout/client/lib/jquery.min.js"></script>
+  <script src="https://www.paynimo.com/paynimocheckout/server/lib/checkout.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --saffron:#E8762B; --saffron-d:#C4581A; --saffron-l:#FDF0E6;
+      --gold:#C9922A; --gold-l:#FBF3E0;
+      --cream:#FDFAF4; --ink:#1C1608; --muted:#7A6A50;
+      --border:#E8DFC8; --white:#FFFFFF;
+      --green:#2D6A3F; --green-l:#E8F5ED;
+      --r:12px; --shadow:0 8px 40px rgba(28,22,8,0.10);
+    }
+    body {
+      font-family:'Jost',sans-serif; background:var(--cream); color:var(--ink);
+      min-height:100vh; display:flex; flex-direction:column;
+      align-items:center; padding:0 16px 80px; overflow-x:hidden;
+    }
+    .top-band {
+      width:100%; background:linear-gradient(135deg,#1C1608 0%,#3A2A08 50%,#1C1608 100%);
+      padding:10px 24px; display:flex; align-items:center;
+      justify-content:center; gap:10px; margin-bottom:0;
+    }
+    .top-band span { color:var(--gold); font-size:11px; font-weight:500; letter-spacing:2px; text-transform:uppercase; }
+    .lotus { font-size:15px; }
+    .hero { text-align:center; padding:40px 20px 30px; max-width:520px; animation:fadeUp .7s ease both; }
+    .emblem { width:76px; height:76px; margin:0 auto 18px; }
+    .emblem svg { width:100%; height:100%; }
+    .org-name { font-family:'Cormorant Garamond',serif; font-size:12px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+    .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(34px,6vw,52px); font-weight:400; line-height:1.1; color:var(--ink); margin-bottom:12px; }
+    .hero h1 em { color:var(--saffron); font-style:italic; }
+    .hero p { font-size:14px; color:var(--muted); line-height:1.7; max-width:360px; margin:0 auto; font-weight:300; }
+    .ornament { display:flex; align-items:center; gap:12px; color:var(--gold); font-size:17px; margin:8px auto 28px; width:fit-content; }
+    .ornament::before,.ornament::after { content:''; display:block; width:55px; height:1px; }
+    .ornament::before { background:linear-gradient(to right,transparent,var(--gold)); }
+    .ornament::after  { background:linear-gradient(to left,transparent,var(--gold)); }
+    .steps { display:flex; align-items:center; gap:0; margin-bottom:24px; animation:fadeUp .7s .1s ease both; opacity:0; animation-fill-mode:both; }
+    .step-item { display:flex; flex-direction:column; align-items:center; gap:5px; }
+    .step-dot { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; background:var(--border); color:var(--muted); transition:all .3s ease; border:2px solid transparent; }
+    .step-dot.active { background:var(--saffron); color:white; border-color:var(--saffron-d); box-shadow:0 0 0 4px rgba(232,118,43,0.18); }
+    .step-dot.done { background:var(--green); color:white; border-color:var(--green); }
+    .step-label { font-size:9px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; color:var(--muted); transition:color .3s; }
+    .step-label.active { color:var(--saffron); }
+    .step-conn { width:44px; height:1.5px; background:var(--border); margin:0 4px 20px; transition:background .4s; }
+    .step-conn.done { background:var(--green); }
+    .card { background:var(--white); border-radius:var(--r); box-shadow:var(--shadow); border:1px solid var(--border); padding:36px 30px; width:100%; max-width:480px; animation:fadeUp .7s .15s ease both; opacity:0; animation-fill-mode:both; }
+    .card-eyebrow { font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--saffron); margin-bottom:5px; }
+    .card-title { font-family:'Cormorant Garamond',serif; font-size:25px; font-weight:600; color:var(--ink); margin-bottom:4px; }
+    .card-sub { font-size:13px; color:var(--muted); margin-bottom:26px; line-height:1.6; font-weight:300; }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:11px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+    .form-group input,.form-group select {
+      width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:8px;
+      font-family:'Jost',sans-serif; font-size:15px; color:var(--ink);
+      background:var(--cream); transition:border-color .2s,box-shadow .2s,background .2s;
+      outline:none; appearance:none; -webkit-appearance:none;
+    }
+    .form-group input:focus,.form-group select:focus { border-color:var(--saffron); background:var(--white); box-shadow:0 0 0 3px rgba(232,118,43,0.12); }
+    .form-group input.err { border-color:#c0392b; }
+    .ferr { font-size:11px; color:#c0392b; margin-top:4px; display:none; }
+    .ferr.show { display:block; }
+    .ph-wrap { display:flex; border:1.5px solid var(--border); border-radius:8px; overflow:hidden; background:var(--cream); transition:border-color .2s,box-shadow .2s; }
+    .ph-wrap:focus-within { border-color:var(--saffron); background:var(--white); box-shadow:0 0 0 3px rgba(232,118,43,0.12); }
+    .ph-wrap.err { border-color:#c0392b; }
+    .ph-pfx { display:flex; align-items:center; gap:5px; padding:12px 13px; background:var(--gold-l); border-right:1.5px solid var(--border); font-size:14px; color:var(--muted); font-weight:500; white-space:nowrap; flex-shrink:0; }
+    .ph-wrap input { border:none!important; box-shadow:none!important; border-radius:0!important; background:transparent!important; flex:1; }
+    .amount-presets { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:9px; }
+    .preset-btn { padding:6px 13px; border:1.5px solid var(--border); border-radius:100px; font-family:'Jost',sans-serif; font-size:13px; font-weight:500; color:var(--muted); background:var(--cream); cursor:pointer; transition:all .2s; }
+    .preset-btn:hover { border-color:var(--saffron); color:var(--saffron); }
+    .preset-btn.sel { background:var(--saffron); color:white; border-color:var(--saffron-d); }
+    .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .info-box { background:var(--gold-l); border:1px solid #E8D5A0; border-radius:8px; padding:11px 14px; font-size:12px; color:#7A5C20; line-height:1.6; margin-bottom:20px; display:flex; gap:8px; align-items:flex-start; }
+    .summary-box { background:var(--cream); border:1.5px solid var(--border); border-radius:10px; padding:16px 18px; margin-bottom:20px; }
+    .summary-title { font-size:10px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+    .sum-row { display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-bottom:1px solid var(--border); }
+    .sum-row:last-child { border-bottom:none; }
+    .sum-row .k { color:var(--muted); font-weight:300; }
+    .sum-row .v { font-weight:500; text-align:right; max-width:60%; }
+    .btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px 22px; border:none; border-radius:8px; font-family:'Jost',sans-serif; font-size:15px; font-weight:600; cursor:pointer; transition:all .2s ease; letter-spacing:.3px; }
+    .btn-primary { background:linear-gradient(135deg,var(--saffron) 0%,var(--saffron-d) 100%); color:white; }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(232,118,43,0.35); }
+    .btn-primary:active { transform:translateY(0); }
+    .btn-primary:disabled { opacity:.6; cursor:not-allowed; transform:none; box-shadow:none; }
+    .btn-ghost { background:transparent; color:var(--muted); border:1.5px solid var(--border); margin-top:10px; font-size:13px; }
+    .btn-ghost:hover { border-color:var(--muted); color:var(--ink); }
+    .spin { width:17px; height:17px; border:2px solid rgba(255,255,255,.4); border-top-color:white; border-radius:50%; animation:spinning .6s linear infinite; display:none; }
+    .trust { display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; margin-top:18px; }
+    .trust-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--muted); font-weight:500; }
+    .result { text-align:center; padding:8px 0 14px; }
+    .result-icon { width:74px; height:74px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both; }
+    .r-success { background:var(--green-l); }
+    .r-pending { background:#FFF8E1; }
+    .r-error   { background:#FDEDEB; }
+    .result h2 { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; margin-bottom:10px; }
+    .result p  { font-size:13px; color:var(--muted); line-height:1.7; font-weight:300; }
+    .mandate-pill { display:inline-block; background:var(--saffron-l); color:var(--saffron-d); font-size:12px; font-weight:600; letter-spacing:1px; padding:6px 18px; border-radius:100px; margin:14px 0; }
+    .checklist { background:var(--green-l); border-radius:10px; padding:14px 16px; margin:16px 0; text-align:left; }
+    .check-item { display:flex; align-items:center; gap:9px; font-size:13px; color:var(--green); padding:4px 0; }
+    .screen { display:none; }
+    .screen.active { display:block; animation:fadeUp .35s ease both; }
+    .footer { margin-top:24px; text-align:center; font-size:11px; color:var(--muted); animation:fadeUp .7s .3s ease both; opacity:0; animation-fill-mode:both; }
+    .footer a { color:var(--saffron); text-decoration:none; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes popIn  { from{opacity:0;transform:scale(.5)}       to{opacity:1;transform:scale(1)} }
+    @keyframes spinning { to{transform:rotate(360deg)} }
+    @media(max-width:480px){ .card{padding:24px 18px;} .row2{grid-template-columns:1fr;} .step-conn{width:26px;} }
+  </style>
+</head>
+<body>
 
-:root{
-  --saffron:#E8762B;
-  --saffron-d:#C4581A;
-  --saffron-l:#FEF3EA;
-  --gold:#C9922A;
-  --gold-l:#FBF3E0;
-  --cream:#FFFDF8;
-  --ink:#1C1608;
-  --muted:#7A6A50;
-  --border:#EAE0CC;
-  --white:#FFFFFF;
-  --green:#2D6A3F;
-  --green-l:#E8F5ED;
-}
+<div class="top-band">
+  <span class="lotus">🪷</span>
+  <span>Hare Krishna · Hare Krishna · Krishna Krishna · Hare Hare</span>
+  <span class="lotus">🪷</span>
+</div>
 
-body{
-  font-family:'Nunito',sans-serif;
-  background:var(--cream);
-  color:var(--ink);
-  min-height:100vh;
-}
+<div class="hero">
+  <div class="emblem">
+    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="38" stroke="#C9922A" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <ellipse cx="40" cy="22" rx="5" ry="11" fill="#E8762B" opacity=".85"/>
+      <ellipse cx="40" cy="22" rx="5" ry="11" fill="#E8762B" opacity=".85" transform="rotate(45 40 40)"/>
+      <ellipse cx="40" cy="22" rx="5" ry="11" fill="#E8762B" opacity=".85" transform="rotate(90 40 40)"/>
+      <ellipse cx="40" cy="22" rx="5" ry="11" fill="#E8762B" opacity=".85" transform="rotate(135 40 40)"/>
+      <ellipse cx="40" cy="22" rx="5" ry="11" fill="#C9922A" opacity=".7" transform="rotate(22.5 40 40)"/>
+      <ellipse cx="40" cy="22" rx="5" ry="11" fill="#C9922A" opacity=".7" transform="rotate(67.5 40 40)"/>
+      <ellipse cx="40" cy="22" rx="5" ry="11" fill="#C9922A" opacity=".7" transform="rotate(112.5 40 40)"/>
+      <ellipse cx="40" cy="22" rx="5" ry="11" fill="#C9922A" opacity=".7" transform="rotate(157.5 40 40)"/>
+      <circle cx="40" cy="40" r="10" fill="#FBF3E0" stroke="#C9922A" stroke-width="1.5"/>
+      <circle cx="40" cy="40" r="5" fill="#E8762B"/>
+    </svg>
+  </div>
+  <div class="org-name">ISKCON Centre Orai</div>
+  <h1>Nitya <em>Seva</em></h1>
+  <p>Offer daily service to the Lord through automated giving — sacred, secure &amp; uninterrupted.</p>
+</div>
 
-/* ── TOP BANNER ── */
-.banner{
-  background:#1C1608;
+<div class="ornament">🌸</div>
+
+<div class="steps" id="stepIndicators">
+  <div class="step-item"><div class="step-dot active" id="dot1">1</div><span class="step-label active" id="lbl1">You</span></div>
+  <div class="step-conn" id="conn1"></div>
+  <div class="step-item"><div class="step-dot" id="dot2">2</div><span class="step-label" id="lbl2">Seva</span></div>
+  <div class="step-conn" id="conn2"></div>
+  <div class="step-item"><div class="step-dot" id="dot3">3</div><span class="step-label" id="lbl3">Bank</span></div>
+  <div class="step-conn" id="conn3"></div>
+  <div class="step-item"><div class="step-dot" id="dot4">4</div><span class="step-label" id="lbl4">Done</span></div>
+</div>
+
+<div class="card">
+
+  <!-- STEP 1 -->
+  <div class="screen active" id="s1">
+    <div class="card-eyebrow">Step 1 of 3</div>
+    <div class="card-title">Your details</div>
+    <div class="card-sub">Tell us who you are so we can register your seva correctly.</div>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="fname" placeholder="e.g. Rajesh Kumar" autocomplete="name"/>
+      <div class="ferr" id="eName">Please enter your full name</div>
+    </div>
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <div class="ph-wrap" id="phWrap">
+        <div class="ph-pfx">🇮🇳 +91</div>
+        <input type="tel" id="fmobile" placeholder="9876543210" maxlength="10" inputmode="numeric"/>
+      </div>
+      <div class="ferr" id="eMobile">Enter a valid 10-digit mobile number</div>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="femail" placeholder="you@email.com" autocomplete="email"/>
+      <div class="ferr" id="eEmail">Please enter a valid email address</div>
+    </div>
+    <div class="row2">
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" id="fcity" placeholder="Orai"/>
+      </div>
+      <div class="form-group">
+        <label>PAN (optional)</label>
+        <input type="text" id="fpan" placeholder="ABCDE1234F" maxlength="10"/>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="step1()">
+      Continue
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="trust">
+      <div class="trust-item">🔒 256-bit SSL</div>
+      <div class="trust-item">✅ RBI Approved</div>
+      <div class="trust-item">🛡️ Worldline Secured</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="screen" id="s2">
+    <div class="card-eyebrow">Step 2 of 3</div>
+    <div class="card-title">Seva details</div>
+    <div class="card-sub">Choose how much and how often you'd like to offer.</div>
+    <div class="form-group">
+      <label>Seva Amount (₹)</label>
+      <div class="amount-presets">
+        <button class="preset-btn" onclick="setPreset(this,108)">₹108</button>
+        <button class="preset-btn" onclick="setPreset(this,251)">₹251</button>
+        <button class="preset-btn" onclick="setPreset(this,501)">₹501</button>
+        <button class="preset-btn" onclick="setPreset(this,1001)">₹1001</button>
+        <button class="preset-btn" onclick="setPreset(this,0)">Custom</button>
+      </div>
+      <input type="number" id="famount" placeholder="Enter amount in ₹" min="1"/>
+      <div class="ferr" id="eAmt">Please enter a valid amount (minimum ₹1)</div>
+    </div>
+    <div class="form-group">
+      <label>Frequency</label>
+      <select id="ffreq">
+        <option value="MNTH">Monthly</option>
+        <option value="QURT">Quarterly</option>
+        <option value="YEAR">Yearly</option>
+        <option value="WEEK">Weekly</option>
+        <option value="ADHO">As &amp; when presented</option>
+      </select>
+    </div>
+    <div class="row2">
+      <div class="form-group">
+        <label>Start Date</label>
+        <input type="date" id="fstart"/>
+        <div class="ferr" id="eStart">Select a start date</div>
+      </div>
+      <div class="form-group">
+        <label>End Date</label>
+        <input type="date" id="fend"/>
+        <div class="ferr" id="eEnd">End date must be after start</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Account Type</label>
+      <select id="factype">
+        <option value="Saving">Savings Account</option>
+        <option value="Current">Current Account</option>
+      </select>
+    </div>
+    <div class="info-box">
+      ℹ️ Your bank may debit ₹1–₹2 as an authentication charge during registration. This is standard and may be refunded within 2–3 working days.
+    </div>
+    <button class="btn btn-primary" onclick="step2()">
+      Review &amp; Proceed
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="btn btn-ghost" onclick="goBack(1)">← Back</button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="screen" id="s3">
+    <div class="card-eyebrow">Step 3 of 3</div>
+    <div class="card-title">Confirm &amp; authorise</div>
+    <div class="card-sub">Review your seva mandate then verify with your bank.</div>
+    <div class="summary-box" id="summaryBox">
+      <div class="summary-title">Seva Mandate Summary</div>
+    </div>
+    <div class="info-box">
+      🔐 A secure Worldline bank window will open. Verify using Net Banking, ATM/Debit Card, or Aadhaar OTP.
+    </div>
+    <button class="btn btn-primary" id="btnPay" onclick="launchCheckout()">
+      <span id="btnTxt">Authorise with Bank</span>
+      <svg id="btnArrow" width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="spin" id="btnSpin"></div>
+    </button>
+    <button class="btn btn-ghost" onclick="goBack(2)">← Back</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="screen" id="sSuccess">
+    <div class="result">
+      <div class="result-icon r-success">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="18" fill="#2D6A3F" opacity=".15"/><path d="M11 19l6 6 10-10" stroke="#2D6A3F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>Hare Krishna! 🙏</h2>
+      <p>Your Nitya Seva has been registered. The Lord will receive your offering as scheduled.</p>
+      <div class="mandate-pill" id="mandatePill">Mandate ID: —</div>
+      <div class="checklist">
+        <div class="check-item">✅ Bank account verified &amp; linked</div>
+        <div class="check-item">✅ Recurring seva scheduled</div>
+        <div class="check-item">✅ Confirmation SMS sent to your mobile</div>
+      </div>
+      <p style="font-size:12px;margin-top:8px">You may cancel this mandate anytime via your bank's net banking portal.</p>
+    </div>
+  </div>
+
+  <!-- PENDING -->
+  <div class="screen" id="sPending">
+    <div class="result">
+      <div class="result-icon r-pending">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="18" fill="#F59E0B" opacity=".15"/><path d="M19 10v9l5 5" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>Registration Initiated</h2>
+      <p>Your seva mandate has been submitted. Your bank will approve it within 24–48 hours.</p>
+      <div class="mandate-pill" id="pendingPill" style="background:#FFF8E1;color:#B45309">Txn Ref: —</div>
+      <p style="font-size:12px;margin-top:12px">If you don't hear back in 48 hours, contact ISKCON Centre Orai with your transaction reference.</p>
+    </div>
+  </div>
+
+  <!-- ERROR -->
+  <div class="screen" id="sError">
+    <div class="result">
+      <div class="result-icon r-error">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="18" fill="#E74C3C" opacity=".12"/><path d="M1  background:#1C1608;
   padding:9px 16px;
   text-align:center;
   font-size:11px;
